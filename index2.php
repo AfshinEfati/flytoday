@@ -7,6 +7,7 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url2);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+// curl_setopt($ch, CURLOPT_PROXY, '50.233.228.147:8080');
 $res = curl_exec($ch);
 curl_close($ch);
 
@@ -27,6 +28,8 @@ foreach ($dom->find('form') as $key => $value) {
   }
 }
 
+print $token;
+die;
 $params = array(
   'ReturnUrl' => '',
   '__RequestVerificationToken' => $token,
@@ -56,8 +59,14 @@ curl_setopt_array($curl, array(
 
   CURLOPT_POSTFIELDS      => $params,
 ));
-
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 $response = curl_exec($curl);
 
+
+// echo $response;
+echo '</br>' . "----------------------------------------------------------------";
+$info = curl_getinfo($curl);
+print_r($info);
 curl_close($curl);
-echo $response;
